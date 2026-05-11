@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
 import { useAuth } from "../context/AuthContext";
-
+import Navbar from "../components/Navbar";
 import {
   getUserInfo,
   getUserActivity,
@@ -69,20 +68,8 @@ export default function Dashboard() {
 
   return (
     <main>
-      <button onClick={handleLogout}>
-        Déconnexion
-      </button>
-
-      <button
-        onClick={() => navigate("/profile")}
-      >
-        Mon profil
-      </button>
-
-      <h1>Dashboard</h1>
-
+      <Navbar />
       <hr />
-
       <h2>
         Bonjour {user.profile.firstName}
       </h2>

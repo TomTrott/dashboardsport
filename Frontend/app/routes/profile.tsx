@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router";
-
 import { useAuth } from "../context/AuthContext";
-
 import { getUserInfo } from "../services/api";
+import Navbar from "../components/Navbar";
 
 export default function Profile() {
 
-  const { token, logout } = useAuth();
-
+  const { token } = useAuth();
   const navigate = useNavigate();
-
   const [user, setUser] = useState<any>(null);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,34 +16,17 @@ export default function Profile() {
     if (!token) return;
 
     async function load() {
-
       try {
-
         const data = await getUserInfo(token);
-
         setUser(data);
-
       } catch (error) {
-
         navigate("/");
-
       } finally {
-
         setLoading(false);
-
       }
     }
-
     load();
-
   }, [token, navigate]);
-
-  function handleLogout() {
-
-    logout();
-
-    navigate("/");
-  }
 
   if (!token) {
     return <p>Chargement session...</p>;
@@ -62,18 +40,15 @@ export default function Profile() {
     return <p>Aucune donnée</p>;
   }
 
-  // Calcul calories brûlées
-  //additions des caloris bruler de  chaque session
-
+  // Calcul calories brûlées en additionnant les calories de chaque session de course
   const totalCaloriesBurned = user.runningData.reduce(
     (sum: number, session: any) =>
       sum + session.caloriesBurned,
     0
   );
 
-  // Calcul jours de repos
-// récupère le premier et le dernier jour de session pour calculer le nombre total de jours entre les deux
-//puis soustrait le nombre de sessions pour obtenir le nombre de jours de repos
+  // Calcul jours de repos en calculant la différence entre la première et la dernière session de course, puis en soustrayant le nombre de sessions de course du nombre total de jours
+
   const firstDate = new Date(
     user.runningData[0].date
   );
@@ -94,96 +69,86 @@ export default function Profile() {
 
   return (
 
-    <main>
+    <>
+      <Navbar />
+      <main>
+        <hr />
+        <img
+          src={user.profile.profilePicture}
+          alt="profile"
+          width="150"
+        />
 
-      <button onClick={handleLogout}>
-        Déconnexion
-      </button>
+        <h2>
+          {user.profile.firstName}
+          {" "}
+          {user.profile.lastName}
+        </h2>
 
-      <button
-        onClick={() => navigate("/dashboard")}
-      >
-        Dashboard
-      </button>
+        <p>
+          Membre depuis :
+          {" "}
+          {user.profile.createdAt}
+        </p>
 
-      <h1>Mon profil</h1>
+        <hr />
 
-      <hr />
+        <h2>Informations</h2>
 
-      <img
-        src={user.profile.profilePicture}
-        alt="profile"
-        width="150"
-      />
+        <p>
+          Âge :
+          {" "}
+          {user.profile.age}
+        </p>
 
-      <h2>
-        {user.profile.firstName}
-        {" "}
-        {user.profile.lastName}
-      </h2>
+        <p>
+          Taille :
+          {" "}
+          {user.profile.height} cm
+        </p>
 
-      <p>
-        Membre depuis :
-        {" "}
-        {user.profile.createdAt}
-      </p>
+        <p>
+          Poids :
+          {" "}
+          {user.profile.weight} kg
+        </p>
 
-      <hr />
+        <hr />
 
-      <h2>Informations</h2>
+        <h2>Statistiques</h2>
 
-      <p>
-        Âge :
-        {" "}
-        {user.profile.age}
-      </p>
+        <p>
+          Distance totale :
+          {" "}
+          {user.statistics.totalDistance} km
+        </p>
 
-      <p>
-        Taille :
-        {" "}
-        {user.profile.height} cm
-      </p>
+        <p>
+          Nombre de sessions :
+          {" "}
+          {user.statistics.totalSessions}
+        </p>
 
-      <p>
-        Poids :
-        {" "}
-        {user.profile.weight} kg
-      </p>
+        <p>
+          Temps total :
+          {" "}
+          {user.statistics.totalDuration} minutes
+        </p>
 
-      <hr />
+        <p>
+          Calories brûlées :
+          {" "}
+          {totalCaloriesBurned} kcal
+        </p>
 
-      <h2>Statistiques</h2>
+        <p>
+          Nombre de jours de repos :
+          {" "}
+          {totalRestDays}
+        </p>
 
-      <p>
-        Distance totale :
-        {" "}
-        {user.statistics.totalDistance} km
-      </p>
+      </main>
 
-      <p>
-        Nombre de sessions :
-        {" "}
-        {user.statistics.totalSessions}
-      </p>
-
-      <p>
-        Temps total :
-        {" "}
-        {user.statistics.totalDuration} minutes
-      </p>
-
-      <p>
-        Calories brûlées :
-        {" "}
-        {totalCaloriesBurned} kcal
-      </p>
-
-      <p>
-        Nombre de jours de repos :
-        {" "}
-        {totalRestDays}
-      </p>
-
-    </main>
+    </>
   );
 }

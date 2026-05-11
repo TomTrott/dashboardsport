@@ -1,0 +1,63 @@
+/* components/Navbar.css */
+
+.navbar {
+  width: 100%;
+  height: 90px;
+  background: #dcdce4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.logo-text {
+  font-size: 42px;
+  font-weight: 800;
+  color: #1f34f2;
+  letter-spacing: -1px;
+}
+
+.navbar-menu {
+  background: #f1f1f1;
+  border-radius: 40px;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-menu button {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  color: #111;
+  transition: 0.2s;
+}
+
+.navbar-menu button:hover {
+  opacity: 0.7;
+}
+
+.navbar-separator {
+  width: 1px;
+  height: 28px;
+  background: #6c63ff;
+}
+
+.logout-btn {
+  color: #3145ff !important;
+  font-weight: 500;
+}
