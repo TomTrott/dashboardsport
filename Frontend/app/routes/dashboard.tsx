@@ -40,7 +40,7 @@ export default function Dashboard() {
         setActivities(activityData);
 
       } catch (error) {
-        navigate("/login");
+        navigate("/");
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ export default function Dashboard() {
   function handleLogout() {
     logout();
 
-    navigate("/login");
+    navigate("/");
   }
 
   if (!token) {

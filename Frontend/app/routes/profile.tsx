@@ -30,7 +30,7 @@ export default function Profile() {
 
       } catch (error) {
 
-        navigate("/login");
+        navigate("/");
 
       } finally {
 
@@ -47,7 +47,7 @@ export default function Profile() {
 
     logout();
 
-    navigate("/login");
+    navigate("/");
   }
 
   if (!token) {
