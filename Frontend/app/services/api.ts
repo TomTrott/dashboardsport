@@ -38,3 +38,21 @@ export async function getUserInfo(token: string) {
   // conversion de la réponse en JSON
   return res.json();
 }
+
+/** Activités utilisateur */
+export async function getUserActivity(
+  token: string,
+  startWeek: string,
+  endWeek: string
+) {
+  const res = await fetch(
+    `http://localhost:8000/api/user-activity?startWeek=${startWeek}&endWeek=${endWeek}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.json();
+}
