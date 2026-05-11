@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { getUserInfo } from "../services/api";
 
 export default function Profile() {
+
   const { token, logout } = useAuth();
 
   const navigate = useNavigate();
@@ -16,25 +17,34 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     if (!token) return;
 
     async function load() {
+
       try {
+
         const data = await getUserInfo(token);
 
         setUser(data);
 
       } catch (error) {
+
         navigate("/login");
+
       } finally {
+
         setLoading(false);
+
       }
     }
 
     load();
-  }, [token]);
+
+  }, [token, navigate]);
 
   function handleLogout() {
+
     logout();
 
     navigate("/login");
@@ -53,7 +63,9 @@ export default function Profile() {
   }
 
   return (
+
     <main>
+
       <button onClick={handleLogout}>
         Déconnexion
       </button>
@@ -69,7 +81,7 @@ export default function Profile() {
       <hr />
 
       <img
-        src={`http://localhost:8000/images/${user.profile.profilePicture}`}
+        src={user.profile.profilePicture}
         alt="profile"
         width="150"
       />
@@ -99,13 +111,13 @@ export default function Profile() {
       <p>
         Taille :
         {" "}
-        {user.profile.height}
+        {user.profile.height} cm
       </p>
 
       <p>
         Poids :
         {" "}
-        {user.profile.weight}
+        {user.profile.weight} kg
       </p>
 
       <hr />
@@ -115,8 +127,7 @@ export default function Profile() {
       <p>
         Distance totale :
         {" "}
-        {user.statistics.totalDistance}
-        {" "}km
+        {user.statistics.totalDistance} km
       </p>
 
       <p>
@@ -128,9 +139,9 @@ export default function Profile() {
       <p>
         Temps total :
         {" "}
-        {user.statistics.totalDuration}
-        {" "}minutes
+        {user.statistics.totalDuration} minutes
       </p>
+
     </main>
   );
 }
