@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
 import { useAuth } from "../context/AuthContext";
-import { getUserInfo } from "../services/api";
+
+import {
+  getUserInfo,
+  getUserActivity,
+} from "../services/api";
 
 export default function Dashboard() {
-  // récupère token + fonction logout du Context
   const { token, logout } = useAuth();
 
   const navigate = useNavigate();
 
   const [user, setUser] = useState<any>(null);
+
+  const [activities, setActivities] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,8 +24,21 @@ export default function Dashboard() {
 
     async function load() {
       try {
-        const data = await getUserInfo(token);
-        setUser(data);
+        // infos utilisateur
+        const userData = await getUserInfo(token);
+
+        setUser(userData);
+
+        // activités
+        const activityData =
+          await getUserActivity(
+            token,
+            "2025-01-01",
+            "2025-12-31"
+          );
+
+        setActivities(activityData);
+
       } catch (error) {
         navigate("/login");
       } finally {
@@ -29,30 +49,122 @@ export default function Dashboard() {
     load();
   }, [token]);
 
-   // fonction déconnexion
   function handleLogout() {
-    logout(); // supprime token localStorage
-    navigate("/login"); // redirection login
+    logout();
+
+    navigate("/login");
   }
 
-  // on attend de recevoir le token
-  if (!token) return <p>Chargement session...</p>;
+  if (!token) {
+    return <p>Chargement session...</p>;
+  }
 
-  // attend API
-  if (loading) return <p>Chargement dashboard...</p>;
+  if (loading) {
+    return <p>Chargement dashboard...</p>;
+  }
 
-  // sécurité
-  if (!user || !user.profile) return <p>Aucune donnée</p>;
+  if (!user || !user.profile) {
+    return <p>Aucune donnée</p>;
+  }
 
   return (
     <main>
-       <button onClick={handleLogout}>
+      <button onClick={handleLogout}>
         Déconnexion
       </button>
-      <h1>Bonjour {user.profile.firstName}</h1>
 
-      <p>Nom : {user.profile.lastName}</p>
-      <p>Distance : {user.statistics.totalDistance} km</p>
+      <button
+        onClick={() => navigate("/profile")}
+      >
+        Mon profil
+      </button>
+
+      <h1>Dashboard</h1>
+
+      <hr />
+
+      <h2>
+        Bonjour {user.profile.firstName}
+      </h2>
+
+      <p>
+        Nom : {user.profile.lastName}
+      </p>
+
+      <p>
+        Distance totale :
+        {" "}
+        {user.statistics.totalDistance}
+        {" "}km
+      </p>
+
+      <p>
+        Nombre de sessions :
+        {" "}
+        {user.statistics.totalSessions}
+      </p>
+
+      <p>
+        Temps total :
+        {" "}
+        {user.statistics.totalDuration}
+        {" "}minutes
+      </p>
+
+      <hr />
+
+      <h2>Activités</h2>
+
+      {activities.map((activity: any) => (
+        <div
+          key={activity.date}
+          style={{
+            marginBottom: "20px",
+          }}
+        >
+          <h3>{activity.date}</h3>
+
+          <p>
+            Distance :
+            {" "}
+            {activity.distance}
+            {" "}km
+          </p>
+
+          <p>
+            Durée :
+            {" "}
+            {activity.duration}
+            {" "}minutes
+          </p>
+
+          <p>
+            Calories :
+            {" "}
+            {activity.caloriesBurned}
+          </p>
+
+          <p>
+            BPM minimum :
+            {" "}
+            {activity.heartRate.min}
+          </p>
+
+          <p>
+            BPM maximum :
+            {" "}
+            {activity.heartRate.max}
+          </p>
+
+          <p>
+            BPM moyen :
+            {" "}
+            {activity.heartRate.average}
+          </p>
+
+          <hr />
+        </div>
+      ))}
     </main>
   );
 }
