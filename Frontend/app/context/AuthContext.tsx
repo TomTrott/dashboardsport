@@ -1,11 +1,18 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext<any>(null);
 
 export function AuthProvider({ children }: any) {
-  const [token, setToken] = useState(
-    localStorage.getItem("token") || null
-  );
+  const [token, setToken] = useState<string | null>(null);
+
+  // seulement navigateur
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
 
   const login = (newToken: string) => {
     localStorage.setItem("token", newToken);
