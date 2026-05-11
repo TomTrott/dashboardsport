@@ -12,4 +12,4 @@ const port = 8000;
 app.use(router);
 router.use('/images', express.static('images'));
 
-app.listen(port, () => console.log(`Magic happens on port ${port}`));
+app.listen(port, () => console.log(`Backend lancer sur localhost:${port}`));
