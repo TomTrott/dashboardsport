@@ -4,7 +4,9 @@ import { useAuth } from "../context/AuthContext";
 import { getUserInfo } from "../services/api";
 
 export default function Dashboard() {
-  const { token } = useAuth();
+  // récupère token + fonction logout du Context
+  const { token, logout } = useAuth();
+
   const navigate = useNavigate();
 
   const [user, setUser] = useState<any>(null);
@@ -27,6 +29,12 @@ export default function Dashboard() {
     load();
   }, [token]);
 
+   // fonction déconnexion
+  function handleLogout() {
+    logout(); // supprime token localStorage
+    navigate("/login"); // redirection login
+  }
+
   // on attend de recevoir le token
   if (!token) return <p>Chargement session...</p>;
 
@@ -38,6 +46,9 @@ export default function Dashboard() {
 
   return (
     <main>
+       <button onClick={handleLogout}>
+        Déconnexion
+      </button>
       <h1>Bonjour {user.profile.firstName}</h1>
 
       <p>Nom : {user.profile.lastName}</p>
