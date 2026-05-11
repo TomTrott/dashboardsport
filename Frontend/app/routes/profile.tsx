@@ -62,6 +62,38 @@ export default function Profile() {
     return <p>Aucune donnée</p>;
   }
 
+  // =========================
+  // Calcul calories brûlées
+  // =========================
+
+  const totalCaloriesBurned = user.runningData.reduce(
+    (sum: number, session: any) =>
+      sum + session.caloriesBurned,
+    0
+  );
+
+  // =========================
+  // Calcul jours de repos
+  // =========================
+
+  const firstDate = new Date(
+    user.runningData[0].date
+  );
+
+  const lastDate = new Date(
+    user.runningData[user.runningData.length - 1].date
+  );
+
+  const diffTime = Math.abs(
+    lastDate.getTime() - firstDate.getTime()
+  );
+
+  const totalDays =
+    Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+  const totalRestDays =
+    totalDays - user.runningData.length;
+
   return (
 
     <main>
@@ -140,6 +172,18 @@ export default function Profile() {
         Temps total :
         {" "}
         {user.statistics.totalDuration} minutes
+      </p>
+
+      <p>
+        Calories brûlées :
+        {" "}
+        {totalCaloriesBurned} kcal
+      </p>
+
+      <p>
+        Nombre de jours de repos :
+        {" "}
+        {totalRestDays}
       </p>
 
     </main>

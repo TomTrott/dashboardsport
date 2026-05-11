@@ -72,13 +72,16 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
   };
 
   return res.json({
-    profile: userProfile,
-    statistics: {
-      totalDistance,
-      totalSessions,
-      totalDuration,
-    },
-  });
+  profile: userProfile,
+
+  statistics: {
+    totalDistance,
+    totalSessions,
+    totalDuration,
+  },
+
+  runningData,
+});
 });
 
 /**
