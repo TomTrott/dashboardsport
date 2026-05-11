@@ -98,19 +98,6 @@ export default function Dashboard() {
         {" "}km
       </p>
 
-      <p>
-        Nombre de sessions :
-        {" "}
-        {user.statistics.totalSessions}
-      </p>
-
-      <p>
-        Temps total :
-        {" "}
-        {user.statistics.totalDuration}
-        {" "}minutes
-      </p>
-
       <hr />
 
       <h2>Activités</h2>
