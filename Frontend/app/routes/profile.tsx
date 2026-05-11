@@ -62,9 +62,8 @@ export default function Profile() {
     return <p>Aucune donnée</p>;
   }
 
-  // =========================
   // Calcul calories brûlées
-  // =========================
+  //additions des caloris bruler de  chaque session
 
   const totalCaloriesBurned = user.runningData.reduce(
     (sum: number, session: any) =>
@@ -72,10 +71,9 @@ export default function Profile() {
     0
   );
 
-  // =========================
   // Calcul jours de repos
-  // =========================
-
+// récupère le premier et le dernier jour de session pour calculer le nombre total de jours entre les deux
+//puis soustrait le nombre de sessions pour obtenir le nombre de jours de repos
   const firstDate = new Date(
     user.runningData[0].date
   );
