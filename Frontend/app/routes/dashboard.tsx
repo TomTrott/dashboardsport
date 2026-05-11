@@ -9,13 +9,9 @@ import {
 
 export default function Dashboard() {
   const { token, logout } = useAuth();
-
   const navigate = useNavigate();
-
   const [user, setUser] = useState<any>(null);
-
   const [activities, setActivities] = useState<any[]>([]);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +21,6 @@ export default function Dashboard() {
       try {
         // infos utilisateur
         const userData = await getUserInfo(token);
-
         setUser(userData);
 
         // activités
@@ -50,7 +45,6 @@ export default function Dashboard() {
 
   function handleLogout() {
     logout();
-
     navigate("/");
   }
 

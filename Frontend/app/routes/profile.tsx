@@ -52,18 +52,14 @@ export default function Profile() {
   const firstDate = new Date(
     user.runningData[0].date
   );
-
   const lastDate = new Date(
     user.runningData[user.runningData.length - 1].date
   );
-
   const diffTime = Math.abs(
     lastDate.getTime() - firstDate.getTime()
   );
-
   const totalDays =
     Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
   const totalRestDays =
     totalDays - user.runningData.length;
 
