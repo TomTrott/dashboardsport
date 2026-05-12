@@ -176,6 +176,39 @@
   border: 1px solid #ececff;
 }
 
+/* HEART CHART */
+
+.dashboard-heart-chart {
+  width: 100%;
+  height: 320px;
+  margin-top: 15px;
+}
+
+/* legend */
+
+.recharts-legend-wrapper {
+  bottom: -10px !important;
+}
+
+.recharts-default-legend {
+  display: flex !important;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.recharts-legend-item-text {
+  color: #777 !important;
+  font-size: 14px;
+}
+
+/* tooltip */
+
+.recharts-default-tooltip {
+  border: none !important;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
 /* ACTIVITIES */
 
 .dashboard-activities {
