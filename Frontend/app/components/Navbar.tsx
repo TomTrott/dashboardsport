@@ -22,6 +22,13 @@ export default function Navbar() {
         className="navbar-logo"
         onClick={() => navigate("/dashboard")}
       >
+        <div className="logo-bars">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <span className="logo-text">
           SPORTSEE
         </span>
