@@ -7,9 +7,10 @@ import {
   getUserInfo,
   getUserActivity,
 } from "../services/api";
+import "../css/Dashboard.css";
 
 export default function Dashboard() {
-  /* récupération du token et initialisation des états */
+  /* déclaration des states */
   const { token, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
@@ -18,10 +19,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!token) return;
-/* chargement des données utilisateur et des activités */
     async function load() {
       try {
-        // infos utilisateur
+        // utilisateur
         const userData = await getUserInfo(token);
         setUser(userData);
         // activités
@@ -41,86 +41,218 @@ export default function Dashboard() {
     }
     load();
   }, [token]);
-/* gestion de la déconnexion */
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
-/* gestion des états de chargement et d'erreur */
+
+  // loading
   if (!token) {
-    return <p>Chargement session...</p>;
+    return (
+      <div className="dashboard-loading">
+        Chargement session...
+      </div>
+    );
   }
   if (loading) {
-    return <p>Chargement dashboard...</p>;
+    return (
+      <div className="dashboard-loading">
+        Chargement dashboard...
+      </div>
+    );
   }
   if (!user || !user.profile) {
-    return <p>Aucune donnée</p>;
+    return (
+      <div className="dashboard-empty">
+        Aucune donnée
+      </div>
+    );
   }
 
   return (
-    <main>
-      <Navbar />
-      <hr />
-      <h2>
-        Bonjour {user.profile.firstName}
-      </h2>
-      <p>
-        Nom : {user.profile.lastName}
-      </p>
-      <p>
-        Distance totale :
-        {" "}
-        {user.statistics.totalDistance}
-        {" "}km
-      </p>
-      <hr />
-      <h2>Activités</h2>
- 
-      {activities.map((activity: any) => (
-        <div
-          key={activity.date}
-          style={{
-            marginBottom: "20px",
-          }}
-        >
-          <h3>{activity.date}</h3>
-          <p>
-            Distance :
-            {" "}
-            {activity.distance}
-            {" "}km
-          </p>
-          <p>
-            Durée :
-            {" "}
-            {activity.duration}
-            {" "}minutes
-          </p>
-          <p>
-            Calories :
-            {" "}
-            {activity.caloriesBurned}
-          </p>
-          <p>
-            BPM minimum :
-            {" "}
-            {activity.heartRate.min}
-          </p>
-          <p>
-            BPM maximum :
-            {" "}
-            {activity.heartRate.max}
-          </p>
-          <p>
-            BPM moyen :
-            {" "}
-            {activity.heartRate.average}
-          </p>
 
-          <hr />
-          
+    <main className="dashboard-page">
+
+      <Navbar />
+
+      <section className="dashboard-content">
+
+        {/* =========================
+            HEADER
+        ========================= */}
+
+        <div className="dashboard-header-card">
+
+          {/* gauche */}
+          <div className="dashboard-user-section">
+            <img
+              className="dashboard-user-image"
+              src={user.profile.profilePicture}
+              alt="profile"
+            />
+
+            <div className="dashboard-user-info">
+              <h2>
+                {user.profile.firstName}{" "}
+                {user.profile.lastName}
+              </h2>
+              <p>
+                Membre depuis le{" "}
+                {new Date(user.profile.createdAt).toLocaleDateString(
+                  "fr-FR",
+                  {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  }
+                )}
+              </p>
+            </div>
+          </div>
+
+          {/* droite */}
+          <div className="dashboard-distance-wrapper">
+            <span>
+              Distance totale parcourue
+            </span>
+            <div className="dashboard-distance-card">
+              <h3>
+                {user.statistics.totalDistance} km
+              </h3>
+            </div>
+          </div>
         </div>
-      ))}
+
+        {/* =========================
+            TITLE
+        ========================= */}
+
+        <h1 className="dashboard-section-title">
+          Vos dernières performances
+        </h1>
+
+        {/* =========================
+            STATS
+        ========================= */}
+
+        <div className="dashboard-stats-grid">
+
+          {/* CARD 1 */}
+          <div className="dashboard-stat-card">
+            <div className="dashboard-stat-top">
+              <div className="dashboard-stat-title dashboard-stat-title-blue">
+                <h2>
+                  18km en moyenne
+                </h2>
+                <p>
+                  Total des kilomètres 4 dernières semaines
+                </p>
+              </div>
+
+              <div className="dashboard-period">
+                <button>{"<"}</button>
+                <span>
+                  28 mai - 25 juin
+                </span>
+                <button>{">"}</button>
+              </div>
+            </div>
+
+            {/* chart fake */}
+            <div className="dashboard-chart-placeholder" />
+          </div>
+
+          {/* CARD 2 */}
+          <div className="dashboard-stat-card">
+            <div className="dashboard-stat-top">
+              <div className="dashboard-stat-title dashboard-stat-title-red">
+                <h2>
+                  163 BPM
+                </h2>
+                <p>
+                  Fréquence cardiaque moyenne
+                </p>
+              </div>
+
+              <div className="dashboard-period">
+                <button>{"<"}</button>
+                <span>
+                  28 mai - 04 juin
+                </span>
+                <button>{">"}</button>
+              </div>
+
+            </div>
+            {/* chart fake */}
+            <div className="dashboard-chart-placeholder" />
+          </div>
+        </div>
+
+        {/* =========================
+            ACTIVITÉS
+        ========================= */}
+
+        <section className="dashboard-activities">
+          <h1 className="dashboard-section-title">
+            Activités
+          </h1>
+
+          {activities.map((activity: any) => (
+
+            <div
+              key={activity.date}
+              className="dashboard-activity-card"
+            >
+
+              <h3>
+                {activity.date}
+              </h3>
+
+              <div className="dashboard-activity-list">
+                <div className="dashboard-activity-item">
+                  <span>Distance</span>
+                  <strong>
+                    {activity.distance} km
+                  </strong>
+                </div>
+
+                <div className="dashboard-activity-item">
+                  <span>Durée</span>
+                  <strong>
+                    {activity.duration} min
+                  </strong>
+                </div>
+
+                <div className="dashboard-activity-item">
+                  <span>Calories</span>
+
+                  <strong>
+                    {activity.caloriesBurned}
+                  </strong>
+                </div>
+
+                <div className="dashboard-activity-item">
+                  <span>BPM min</span>
+                  <strong>
+                    {activity.heartRate.min}
+                  </strong>
+                </div>
+
+                <div className="dashboard-activity-item">
+                  <span>BPM max</span>
+                  <strong>
+                    {activity.heartRate.max}
+                  </strong>
+                </div>
+
+                <div className="dashboard-activity-item">
+                  <span>BPM moyen</span>
+                  <strong>
+                    {activity.heartRate.average}
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+          ))}
+        </section>
+      </section>
       <Footer />
     </main>
   );
