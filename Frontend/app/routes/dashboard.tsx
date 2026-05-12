@@ -5,28 +5,23 @@ import Navbar from "../components/Layout/Navbar";
 import Footer from "../components/Layout/Footer";
 import { getUserInfo, getUserActivity } from "../services/api";
 import "../css/Dashboard.css";
-import { HeartRateChart, DistanceChart } from "../components/Charts";
+import { HeartRateChart, DistanceChart, WeeklySummary } from "../components/Charts";
 
 export default function Dashboard() {
-  /* déclaration des states */
   const { token, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  /* semaine active BPM */
-  const [currentWeek, setCurrentWeek] = useState(0);
-  /* semaine active KM */
-  const [currentDistanceWeek, setCurrentDistanceWeek] = useState(0);
+  const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
   useEffect(() => {
     if (!token) return;
     async function load() {
       try {
-        // utilisateur
         const userData = await getUserInfo(token);
         setUser(userData);
-        // activités
         const activityData = await getUserActivity(token, "2025-01-01", "2025-12-31");
         setActivities(activityData);
       } catch (error) {
@@ -38,7 +33,6 @@ export default function Dashboard() {
     load();
   }, [token]);
 
-  // loading
   if (!token) {
     return <div className="dashboard-loading">Chargement session...</div>;
   }
@@ -49,45 +43,108 @@ export default function Dashboard() {
     return <div className="dashboard-empty">Aucune donnée</div>;
   }
 
-  /* données pour les graphiques */
-  /* découpage des activités */
-  const activitiesPerWeek = 7;
-  /* tri des activités par date */
-  const sortedActivities = [...activities].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  /* découpage par semaine */
-  const groupedActivities = [];
-  for (let i = 0; i < sortedActivities.length; i += activitiesPerWeek) {
-    groupedActivities.push(sortedActivities.slice(i, i + activitiesPerWeek));
-  }
+  // Tri des activités par date
+  const sortedActivities = [...activities].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
 
-  /* activités affichées */
-  const currentActivities = groupedActivities[currentWeek] || [];
-  /* données graphiques BPM */
-  const heartRateData = currentActivities.map((activity: any) => ({
+  // Fonction pour regrouper les activités par semaine (lundi-dimanche)
+  const groupActivitiesByWeek = (activities: any[]) => {
+    const weeks: any[] = [];
+    let currentWeek: any[] = [];
+
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
+      const dayOfWeek = date.getDay(); // 0 (dimanche) à 6 (samedi)
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+      if (currentWeek.length === 0) {
+        currentWeek.push(activity);
+      } else {
+        const lastActivityDate = new Date(currentWeek[currentWeek.length - 1].date);
+        const lastMonday = new Date(lastActivityDate);
+        lastMonday.setDate(lastActivityDate.getDate() - (lastActivityDate.getDay() === 0 ? 6 : lastActivityDate.getDay() - 1));
+
+        if (monday.getTime() === lastMonday.getTime()) {
+          currentWeek.push(activity);
+        } else {
+          weeks.push(currentWeek);
+          currentWeek = [activity];
+        }
+      }
+    });
+
+    if (currentWeek.length > 0) {
+      weeks.push(currentWeek);
+    }
+
+    return weeks;
+  };
+
+  // Fonction pour regrouper les semaines par mois
+  const groupWeeksByMonth = (weeks: any[]) => {
+    const months: { month: string; weeks: any[] }[] = [];
+    let currentMonth = "";
+
+    weeks.forEach((week) => {
+      const firstDayOfWeek = new Date(week[0].date);
+      const monthYear = firstDayOfWeek.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+
+      if (currentMonth !== monthYear) {
+        currentMonth = monthYear;
+        months.push({ month: monthYear, weeks: [week] });
+      } else {
+        months[months.length - 1].weeks.push(week);
+      }
+    });
+
+    return months;
+  };
+
+  const groupedActivitiesByWeek = groupActivitiesByWeek(sortedActivities);
+  const months = groupWeeksByMonth(groupedActivitiesByWeek);
+  const currentMonth = months[currentMonthIndex];
+  const currentMonthWeeks = currentMonth?.weeks || [];
+
+  // Données pour le graphique BPM (semaine active)
+  const currentWeekActivities = groupedActivitiesByWeek[currentWeekIndex] || [];
+  const heartRateData = currentWeekActivities.map((activity: any) => ({
     day: new Date(activity.date).toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""),
     min: activity.heartRate.min,
     max: activity.heartRate.max,
     average: activity.heartRate.average,
     fullDate: activity.date,
   }));
-  /* période affichée BPM */
-  const firstDate = currentActivities[0]?.date;
-  const lastDate = currentActivities[currentActivities.length - 1]?.date;
+
+  // Période affichée pour le graphique BPM
+  const firstDate = currentWeekActivities[0]?.date;
+  const lastDate = currentWeekActivities[currentWeekActivities.length - 1]?.date;
   const formattedPeriod = firstDate && lastDate
     ? `Période du ${new Date(firstDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })} au ${new Date(lastDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}`
     : "";
 
-  /* données kilométriques des 4 semaines */
-  const distanceData = groupedActivities.slice(currentDistanceWeek, currentDistanceWeek + 4).map((week: any, index: number) => {
+  // Données pour le graphique Distance (toutes les semaines du mois actuel)
+  const distanceData = currentMonthWeeks.map((week: any, index: number) => {
     const totalDistance = week.reduce((acc: number, activity: any) => acc + activity.distance, 0);
-    return { week: `S${index + 1}`, distance: Number(totalDistance.toFixed(1)) };
+    const firstDayOfWeek = week[0]?.date ? new Date(week[0].date) : new Date();
+    return {
+      week: `S${index + 1}`,
+      distance: Number(totalDistance.toFixed(1)),
+      startDate: firstDayOfWeek,
+    };
   });
-  /* période graphique kilomètres */
-  const distanceFirstDate = groupedActivities[currentDistanceWeek]?.[0]?.date;
-  const distanceLastDate = groupedActivities[Math.min(currentDistanceWeek + 3, groupedActivities.length - 1)]?.slice(-1)[0]?.date;
-  const formattedDistancePeriod = distanceFirstDate && distanceLastDate
-    ? `${new Date(distanceFirstDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })} - ${new Date(distanceLastDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}`
-    : "";
+
+  // Période affichée pour le graphique Distance
+  const formattedDistancePeriod = currentMonth ? currentMonth.month : "";
+
+  // Calcul des données pour "Cette semaine" (semaine active)
+  const completedRuns = currentWeekActivities.length;
+  const totalDuration = currentWeekActivities.reduce((acc: number, activity: any) => acc + activity.duration, 0);
+  const totalDistanceWeekly = currentWeekActivities.reduce((acc: number, activity: any) => acc + activity.distance, 0);
+  const weeklyGoal = 6;
+  const currentWeekStartDate = currentWeekActivities[0]?.date || "";
+  const currentWeekEndDate = currentWeekActivities[currentWeekActivities.length - 1]?.date || "";
 
   return (
     <main className="dashboard-page">
@@ -95,7 +152,6 @@ export default function Dashboard() {
       <section className="dashboard-content">
         {/* HEADER */}
         <div className="dashboard-header-card">
-          {/* gauche */}
           <div className="dashboard-user-section">
             <img className="dashboard-user-image" src={user.profile.profilePicture} alt="profile" />
             <div className="dashboard-user-info">
@@ -103,7 +159,6 @@ export default function Dashboard() {
               <p>Membre depuis le {new Date(user.profile.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</p>
             </div>
           </div>
-          {/* droite */}
           <div className="dashboard-distance-wrapper">
             <span>Distance totale parcourue</span>
             <div className="dashboard-distance-card">
@@ -117,39 +172,33 @@ export default function Dashboard() {
 
         {/* STATS */}
         <div className="dashboard-stats-grid">
+          {/* Km moyens */}
           <DistanceChart
             data={distanceData}
-            currentDistanceWeek={currentDistanceWeek}
-            setCurrentDistanceWeek={setCurrentDistanceWeek}
-            groupedActivitiesLength={groupedActivities.length}
+            currentMonthIndex={currentMonthIndex}
+            setCurrentMonthIndex={setCurrentMonthIndex}
+            monthsLength={months.length}
             formattedDistancePeriod={formattedDistancePeriod}
           />
+          {/* bpm */}
           <HeartRateChart
             data={heartRateData}
-            currentWeek={currentWeek}
-            setCurrentWeek={setCurrentWeek}
-            groupedActivitiesLength={groupedActivities.length}
+            currentWeekIndex={currentWeekIndex}
+            setCurrentWeekIndex={setCurrentWeekIndex}
+            groupedActivitiesLength={groupedActivitiesByWeek.length}
             formattedPeriod={formattedPeriod}
           />
         </div>
 
-        {/* ACTIVITÉS */}
-        <section className="dashboard-activities">
-          <h1 className="dashboard-section-title">Activités</h1>
-          {activities.map((activity: any) => (
-            <div key={activity.date} className="dashboard-activity-card">
-              <h3>{activity.date}</h3>
-              <div className="dashboard-activity-list">
-                <div className="dashboard-activity-item"><span>Distance</span><strong>{activity.distance} km</strong></div>
-                <div className="dashboard-activity-item"><span>Durée</span><strong>{activity.duration} min</strong></div>
-                <div className="dashboard-activity-item"><span>Calories</span><strong>{activity.caloriesBurned}</strong></div>
-                <div className="dashboard-activity-item"><span>BPM min</span><strong>{activity.heartRate.min}</strong></div>
-                <div className="dashboard-activity-item"><span>BPM max</span><strong>{activity.heartRate.max}</strong></div>
-                <div className="dashboard-activity-item"><span>BPM moyen</span><strong>{activity.heartRate.average}</strong></div>
-              </div>
-            </div>
-          ))}
-        </section>
+        {/* CETTE SEMAINE */}
+        <WeeklySummary
+          weeklyGoal={weeklyGoal}
+          completedRuns={completedRuns}
+          totalDuration={totalDuration}
+          totalDistance={totalDistanceWeekly.toFixed(1)}
+          startDate={currentWeekStartDate}
+          endDate={currentWeekEndDate}
+        />
       </section>
       <Footer />
     </main>

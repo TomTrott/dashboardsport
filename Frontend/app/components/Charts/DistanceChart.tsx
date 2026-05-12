@@ -8,17 +8,17 @@ interface DistanceData {
 
 interface DistanceChartProps {
   data: DistanceData[];
-  currentDistanceWeek: number;
-  setCurrentDistanceWeek: (value: number) => void;
-  groupedActivitiesLength: number;
+  currentMonthIndex: number;
+  setCurrentMonthIndex: (value: number) => void;
+  monthsLength: number;
   formattedDistancePeriod: string;
 }
 
 export default function DistanceChart({
   data,
-  currentDistanceWeek,
-  setCurrentDistanceWeek,
-  groupedActivitiesLength,
+  currentMonthIndex,
+  setCurrentMonthIndex,
+  monthsLength,
   formattedDistancePeriod,
 }: DistanceChartProps) {
   const averageDistance = data.length > 0
@@ -30,12 +30,22 @@ export default function DistanceChart({
       <div className="dashboard-stat-top">
         <div className="dashboard-stat-title dashboard-stat-title-blue">
           <h2>{averageDistance}km en moyenne</h2>
-          <p>Total des kilomètres 4 dernières semaines</p>
+          <p>Total des kilomètres pour le mois</p>
         </div>
         <div className="dashboard-period">
-          <button onClick={() => setCurrentDistanceWeek((prev) => (prev > 0 ? prev - 1 : prev))}>{"<"}</button>
+          <button
+            onClick={() => setCurrentMonthIndex((prev) => (prev > 0 ? prev - 1 : prev))}
+            disabled={currentMonthIndex === 0}
+          >
+            {"<"}
+          </button>
           <span>{formattedDistancePeriod}</span>
-          <button onClick={() => setCurrentDistanceWeek((prev) => (prev < groupedActivitiesLength - 4 ? prev + 1 : prev))}>{">"}</button>
+          <button
+            onClick={() => setCurrentMonthIndex((prev) => (prev < monthsLength - 1 ? prev + 1 : prev))}
+            disabled={currentMonthIndex === monthsLength - 1}
+          >
+            {">"}
+          </button>
         </div>
       </div>
       <div className="dashboard-km-chart">

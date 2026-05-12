@@ -1,5 +1,6 @@
 import { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 import "../../css/charts/HeartRateChart.css";
+
 interface HeartRateData {
   day: string;
   min: number;
@@ -10,16 +11,16 @@ interface HeartRateData {
 
 interface HeartRateChartProps {
   data: HeartRateData[];
-  currentWeek: number;
-  setCurrentWeek: (value: number) => void;
+  currentWeekIndex: number;
+  setCurrentWeekIndex: (value: number) => void;
   groupedActivitiesLength: number;
   formattedPeriod: string;
 }
 
 export default function HeartRateChart({
   data,
-  currentWeek,
-  setCurrentWeek,
+  currentWeekIndex,
+  setCurrentWeekIndex,
   groupedActivitiesLength,
   formattedPeriod,
 }: HeartRateChartProps) {
@@ -35,9 +36,19 @@ export default function HeartRateChart({
           <p>Fréquence cardiaque moyenne</p>
         </div>
         <div className="dashboard-period">
-          <button onClick={() => setCurrentWeek((prev) => (prev > 0 ? prev - 1 : prev))}>{"<"}</button>
+          <button
+            onClick={() => setCurrentWeekIndex((prev) => (prev > 0 ? prev - 1 : prev))}
+            disabled={currentWeekIndex === 0}
+          >
+            {"<"}
+          </button>
           <span>{formattedPeriod}</span>
-          <button onClick={() => setCurrentWeek((prev) => (prev < groupedActivitiesLength - 1 ? prev + 1 : prev))}>{">"}</button>
+          <button
+            onClick={() => setCurrentWeekIndex((prev) => (prev < groupedActivitiesLength - 1 ? prev + 1 : prev))}
+            disabled={currentWeekIndex >= groupedActivitiesLength - 1}
+          >
+            {">"}
+          </button>
         </div>
       </div>
       <div className="dashboard-heart-chart">

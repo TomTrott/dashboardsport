@@ -1,6 +1,6 @@
 .dashboard-page {
   min-height: 100vh;
-  background: #f2f2fb;
+  background: #ececf4;
   display: flex;
   flex-direction: column;
 }
@@ -160,68 +160,6 @@
   border-color: #2340ff;
 }
 
-/* ACTIVITIES */
-.dashboard-activities {
-  margin-top: 70px;
-}
-
-.dashboard-activity-card {
-  background: #f9f9fb;
-  border-radius: 20px;
-  padding: 25px 30px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
-}
-
-.dashboard-activity-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 18px;
-  color: #111;
-}
-
-.dashboard-activity-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.dashboard-activity-item {
-  background: #f2f4ff;
-  border-radius: 14px;
-  padding: 18px;
-}
-
-.dashboard-activity-item span {
-  display: block;
-  font-size: 0.95rem;
-  color: #777;
-  margin-bottom: 8px;
-}
-
-.dashboard-activity-item strong {
-  font-size: 1.2rem;
-  color: #111;
-}
-
-/* BUTTONS */
-.dashboard-logout-btn {
-  margin-top: 25px;
-  border: none;
-  background: #ff3b13;
-  color: white;
-  padding: 14px 22px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.dashboard-logout-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.92;
-}
-
 /* STATES */
 .dashboard-loading,
 .dashboard-empty {
@@ -248,10 +186,6 @@
 
   .dashboard-stat-card {
     min-height: auto;
-  }
-
-  .dashboard-activity-list {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -299,7 +233,5 @@
     gap: 20px;
   }
 
-  .dashboard-activity-list {
-    grid-template-columns: 1fr;
-  }
+
 }
