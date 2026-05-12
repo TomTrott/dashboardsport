@@ -16,7 +16,6 @@ export default function Login() {
     const data = await loginUser(username, password);
 
     login(data.token);
-
     navigate("/dashboard");
   }
 
