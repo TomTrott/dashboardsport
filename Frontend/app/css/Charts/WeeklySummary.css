@@ -57,46 +57,59 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .weekly-summary-stat {
-  background: #f9f9fb;
-  border-radius: 14px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
+  background: #f5f5fb;
+  border-radius: 16px;
+  padding: 22px 28px;
+  min-height: 104px;
 
-.weekly-summary-stat span {
-  color: #777;
-  font-size: 1rem;
-}
-
-.weekly-summary-stat-value-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  justify-content: center;
+}
+
+.weekly-summary-stat-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #7b7b86;
+  margin-bottom: 14px;
+}
+
+.weekly-summary-stat-data {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1;
 }
 
 .weekly-summary-stat-value {
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: -0.5px;
 }
 
-.weekly-summary-stat-value-blue {
+.weekly-summary-stat-value-dark-blue {
   color: #2340ff;
 }
 
-.weekly-summary-stat-value-red {
-  color: #ff3b13;
+.weekly-summary-stat-value-dark-red {
+  color: #ff4b1f;
 }
 
 .weekly-summary-stat-unit {
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 2px;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.weekly-summary-stat-unit-blue {
+  color: #a5b4ff;
+}
+
+.weekly-summary-stat-unit-red {
+  color: #ffb09c;
 }
 
 /* Responsive */
