@@ -1,0 +1,44 @@
+/* HEART CHART */
+.dashboard-heart-chart {
+  width: 100%;
+  height: 320px;
+  margin-top: 15px;
+}
+
+/* hover barres BPM */
+.dashboard-heart-chart .recharts-bar-rectangle path {
+  transition: opacity 0.2s ease;
+}
+
+.dashboard-heart-chart .recharts-bar-rectangle:hover path {
+  opacity: 0.85;
+}
+
+/* suppression fond gris hover recharts */
+.recharts-tooltip-cursor {
+  fill: transparent;
+}
+
+/* légende recharts */
+.recharts-legend-wrapper {
+  bottom: -10px;
+}
+
+/* legend */
+.recharts-default-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.recharts-legend-item-text {
+  color: #777;
+  font-size: 14px;
+}
+
+/* tooltip */
+.recharts-default-tooltip {
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}

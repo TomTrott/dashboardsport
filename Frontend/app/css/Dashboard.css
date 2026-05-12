@@ -1,7 +1,6 @@
 .dashboard-page {
   min-height: 100vh;
   background: #f2f2fb;
-
   display: flex;
   flex-direction: column;
 }
@@ -14,8 +13,7 @@
   padding: 40px 20px 80px;
 }
 
-/*HEADER CARD*/
-
+/* HEADER CARD */
 .dashboard-header-card {
   width: 100%;
   background: #f9f9fb;
@@ -82,8 +80,7 @@
   font-weight: 700;
 }
 
-/*TITLE*/
-
+/* TITLE */
 .dashboard-section-title {
   margin-top: 90px;
   margin-bottom: 35px;
@@ -92,12 +89,12 @@
   color: #161616;
 }
 
-/* STATS GRID*/
-
+/* STATS GRID */
 .dashboard-stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  gap: 35px;
+  align-items: start;
 }
 
 /* cards */
@@ -105,7 +102,7 @@
   background: #f9f9fb;
   border-radius: 24px;
   padding: 35px;
-  min-height: 480px;
+  min-height: 520px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
 }
 
@@ -158,59 +155,12 @@
 }
 
 .dashboard-period button:hover {
-  background: #f1f1f1;
-}
-
-/* CHART ZONE*/
-
-.dashboard-chart-placeholder {
-  width: 100%;
-  height: 320px;
-  border-radius: 18px;
-  background: linear-gradient(
-    180deg,
-    rgba(241, 242, 255, 0.7),
-    rgba(248, 248, 255, 0.9)
-  );
-
-  border: 1px solid #ececff;
-}
-
-/* HEART CHART */
-
-.dashboard-heart-chart {
-  width: 100%;
-  height: 320px;
-  margin-top: 15px;
-}
-
-/* legend */
-
-.recharts-legend-wrapper {
-  bottom: -10px !important;
-}
-
-.recharts-default-legend {
-  display: flex !important;
-  gap: 20px;
-  justify-content: flex-start;
-}
-
-.recharts-legend-item-text {
-  color: #777 !important;
-  font-size: 14px;
-}
-
-/* tooltip */
-
-.recharts-default-tooltip {
-  border: none !important;
-  border-radius: 14px !important;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  background: #2340ff;
+  color: white;
+  border-color: #2340ff;
 }
 
 /* ACTIVITIES */
-
 .dashboard-activities {
   margin-top: 70px;
 }
@@ -253,8 +203,7 @@
   color: #111;
 }
 
-/*BUTTONS*/
-
+/* BUTTONS */
 .dashboard-logout-btn {
   margin-top: 25px;
   border: none;
@@ -273,8 +222,7 @@
   opacity: 0.92;
 }
 
-/*STATES*/
-
+/* STATES */
 .dashboard-loading,
 .dashboard-empty {
   min-height: 100vh;
@@ -286,10 +234,8 @@
   background: #f2f2fb;
 }
 
-/* TABLET*/
-
+/* TABLET */
 @media screen and (max-width: 1100px) {
-
   .dashboard-header-card {
     flex-direction: column;
     align-items: flex-start;
@@ -309,10 +255,8 @@
   }
 }
 
-/*MOBILE*/
-
+/* MOBILE */
 @media screen and (max-width: 768px) {
-
   .dashboard-content {
     padding: 25px 16px 60px;
   }

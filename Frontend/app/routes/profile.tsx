@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { getUserInfo } from "../services/api";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/Layout/Navbar";
+import Footer from "../components/Layout/Footer";
 import "../css/Profil.css";
 
 export default function Profile() {
