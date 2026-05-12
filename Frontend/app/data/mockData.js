@@ -1,3 +1,4 @@
+/* données de l'utilisateur */
 export const mockUserInfo = {
   profile: {
     firstName: "Karl",
@@ -14,7 +15,7 @@ export const mockUserInfo = {
     totalDuration: 320
   }
 };
-
+/* activiés de l'utilisateur */
 export const mockUserActivity = [
   {
     date: "2026-05-01",

@@ -2,21 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { loginUser } from "../services/api";
 import { useAuth } from "../context/AuthContext";
-
 import "../css/Login.css";
-
 import BannerLogin from "../../assets/Bannierelogin.png";
 
 export default function Login() {
+  /** state pour stocker les valeurs des champs de formulaire */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const { login } = useAuth();
   const navigate = useNavigate();
 
+/** gére la soumission du formulaire de connexion */
   async function handleSubmit(e: any) {
     e.preventDefault();
-
     const data = await loginUser(username, password);
 
     login(data.token);

@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import {
   getUserInfo,
   getUserActivity,
 } from "../services/api";
 
 export default function Dashboard() {
+  /* récupération du token et initialisation des états */
   const { token, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
@@ -16,13 +18,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!token) return;
-
+/* chargement des données utilisateur et des activités */
     async function load() {
       try {
         // infos utilisateur
         const userData = await getUserInfo(token);
         setUser(userData);
-
         // activités
         const activityData =
           await getUserActivity(
@@ -32,30 +33,26 @@ export default function Dashboard() {
           );
 
         setActivities(activityData);
-
       } catch (error) {
         navigate("/");
       } finally {
         setLoading(false);
       }
     }
-
     load();
   }, [token]);
-
+/* gestion de la déconnexion */
   function handleLogout() {
     logout();
     navigate("/");
   }
-
+/* gestion des états de chargement et d'erreur */
   if (!token) {
     return <p>Chargement session...</p>;
   }
-
   if (loading) {
     return <p>Chargement dashboard...</p>;
   }
-
   if (!user || !user.profile) {
     return <p>Aucune donnée</p>;
   }
@@ -67,22 +64,18 @@ export default function Dashboard() {
       <h2>
         Bonjour {user.profile.firstName}
       </h2>
-
       <p>
         Nom : {user.profile.lastName}
       </p>
-
       <p>
         Distance totale :
         {" "}
         {user.statistics.totalDistance}
         {" "}km
       </p>
-
       <hr />
-
       <h2>Activités</h2>
-
+ 
       {activities.map((activity: any) => (
         <div
           key={activity.date}
@@ -91,39 +84,33 @@ export default function Dashboard() {
           }}
         >
           <h3>{activity.date}</h3>
-
           <p>
             Distance :
             {" "}
             {activity.distance}
             {" "}km
           </p>
-
           <p>
             Durée :
             {" "}
             {activity.duration}
             {" "}minutes
           </p>
-
           <p>
             Calories :
             {" "}
             {activity.caloriesBurned}
           </p>
-
           <p>
             BPM minimum :
             {" "}
             {activity.heartRate.min}
           </p>
-
           <p>
             BPM maximum :
             {" "}
             {activity.heartRate.max}
           </p>
-
           <p>
             BPM moyen :
             {" "}
@@ -131,8 +118,10 @@ export default function Dashboard() {
           </p>
 
           <hr />
+          
         </div>
       ))}
+      <Footer />
     </main>
   );
 }

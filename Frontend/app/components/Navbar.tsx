@@ -3,15 +3,10 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
-
   const navigate = useNavigate();
-
   const { logout } = useAuth();
-
   function handleLogout() {
-
     logout();
-
     navigate("/");
   }
   return (
