@@ -1,4 +1,3 @@
-/* Profile.css */
 .profile-page {
   min-height: 100vh;
   background: #ececf4;
@@ -9,28 +8,37 @@
 .profile-content {
   flex: 1;
   display: flex;
-  gap: 50px;
-  padding: 50px 80px;
+  gap: 40px;
+  padding: 50px 90px;
+
+  /* CENTRAGE */
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-/* colonne gauche */
+/* COLONNE GAUCHE*/
+
 .profile-left {
-  width: 500px;
+  width: 620px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 28px;
 }
 
-/* carte utilisateur*/
+/* carte utilisateur */
 .profile-user-card {
-  background: #f7f7f7;
-  border-radius: 24px;
-  padding: 30px;
+  background: #f8f8f8;
+  border-radius: 22px;
+  padding: 28px 32px;
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 26px;
 }
-/* infos utilisateur */
+
 .profile-user-card img {
   width: 110px;
   height: 110px;
@@ -40,39 +48,42 @@
 
 .profile-user-info h2 {
   font-size: 24px;
-  margin-bottom: 10px;
+  font-weight: 600;
   color: #111;
+  margin-bottom: 10px;
 }
 
 .profile-user-info p {
-  color: #777;
   font-size: 18px;
+  color: #777;
 }
 
-/* carte infos */
+/* carte profil */
 .profile-info-card {
-  background: #f7f7f7;
-  border-radius: 24px;
+  background: #f8f8f8;
+  border-radius: 22px;
   padding: 30px;
+  min-height: 330px;
 }
 
 .profile-info-card h2 {
   font-size: 24px;
-  margin-bottom: 25px;
+  font-weight: 600;
   color: #111;
+  margin-bottom: 24px;
 }
 
 .profile-divider {
   width: 100%;
   height: 1px;
   background: #ddd;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 .profile-info-list {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 28px;
 }
 
 .profile-info-list p {
@@ -80,14 +91,18 @@
   color: #666;
 }
 
-/* colonne droite */
+/*COLONNE DROITE*/
+
 .profile-right {
   flex: 1;
+  max-width: 900px;
 }
 
 .profile-right h1 {
   font-size: 42px;
+  font-weight: 600;
   color: #111;
+  margin-bottom: 6px;
 }
 
 .profile-right span {
@@ -95,19 +110,19 @@
   font-size: 20px;
 }
 
-/* grille de stats */
 .stats-grid {
-  margin-top: 35px;
+  margin-top: 32px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
+  gap: 20px;
 }
 
 .stat-card {
   background: #1f34f2;
-  color: white;
   border-radius: 18px;
-  padding: 30px;
+  padding: 28px 30px;
+  color: white;
+  min-height: 120px;
 }
 
 .stat-card p {
@@ -116,25 +131,28 @@
 }
 
 .stat-card h2 {
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 700;
 }
 
 .stat-card span {
-  color: rgba(255, 255, 255, 0.8);
   font-size: 22px;
+  color: rgba(255,255,255,0.85);
 }
 
-/* tablette */
-@media screen and (max-width: 1100px) {
+/*TABLETTE*/
 
+@media screen and (max-width: 1100px) {
   .profile-content {
     flex-direction: column;
     padding: 30px;
+    max-width: 100%;
   }
 
-  .profile-left {
+  .profile-left,
+  .profile-right {
     width: 100%;
+    max-width: 100%;
   }
 
   .stats-grid {
