@@ -41,8 +41,8 @@ export default function WeeklySummary({
         <div className="weekly-summary-chart">
           <div className="weekly-summary-goal">
             <span className="weekly-summary-goal-text">
-              x{completedRuns} sur objectif de {weeklyGoal}
-            </span>
+  x{completedRuns} <span>sur objectif de {weeklyGoal}</span>
+</span>
             <p>Courses hebdomadaires réalisées</p>
           </div>
           <div className="weekly-summary-pie-chart">
