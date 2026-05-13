@@ -60,12 +60,13 @@ export default function Profile() {
     year: "numeric",
   });
 
-  const genderLabel =
-    user.profile.gender === "male"
-      ? "Homme"
-      : user.profile.gender === "female"
-      ? "Femme"
-      : user.profile.gender;
+
+const genderLabel =
+  user.profile.gender === "male"
+    ? "Homme"
+    : user.profile.gender === "female"
+    ? "Femme"
+    : user.profile.gender;
 
   const totalMinutes = Number(user.statistics.totalDuration);
   const hours = Math.floor(totalMinutes / 60);
