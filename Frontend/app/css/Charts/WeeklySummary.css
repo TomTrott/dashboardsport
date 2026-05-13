@@ -30,9 +30,11 @@
 /* Bloc gauche */
 .weekly-summary-chart {
   flex: 1.1;
+
   background: #ffffff;
   border-radius: 20px;
   padding: 28px;
+
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
 
   display: flex;
@@ -62,11 +64,66 @@
   font-size: 1rem;
 }
 
+/* Wrapper du graphique */
+.weekly-summary-pie-wrapper {
+  position: relative;
+
+  width: 100%;
+  max-width: 420px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 10px auto 0;
+}
+
 /* Camembert */
 .weekly-summary-pie-chart {
   width: 100%;
   max-width: 300px;
-  align-self: center;
+}
+
+/* Légendes */
+.weekly-summary-legend {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 1rem;
+  color: #6f6f79;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+/* Position gauche */
+.weekly-summary-legend-left {
+  left: -10px;
+  bottom: 38px;
+}
+
+/* Position droite */
+.weekly-summary-legend-right {
+  right: -10px;
+  top: 48px;
+}
+
+/* Points */
+.weekly-summary-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.weekly-summary-legend-dot-dark {
+  background: #2340ff;
+}
+
+.weekly-summary-legend-dot-light {
+  background: #c7d2fe;
 }
 
 /* Bloc droite */
@@ -81,8 +138,10 @@
 /* Chaque carte */
 .weekly-summary-stat {
   background: #ffffff;
+
   border-radius: 20px;
   padding: 26px 30px;
+
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
 
   display: flex;
@@ -97,6 +156,7 @@
   color: #7b7b86;
   font-size: 1.05rem;
   font-weight: 500;
+
   margin-bottom: 20px;
 }
 
@@ -144,5 +204,19 @@
   .weekly-summary-chart,
   .weekly-summary-stats {
     width: 100%;
+  }
+
+  .weekly-summary-pie-wrapper {
+    max-width: 320px;
+  }
+
+  .weekly-summary-legend-left {
+    left: 0;
+    bottom: 10px;
+  }
+
+  .weekly-summary-legend-right {
+    right: 0;
+    top: 20px;
   }
 }
